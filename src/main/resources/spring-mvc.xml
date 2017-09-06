@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+">
+    <!-- 开启mvc注解驱动，配置使用fastjson返回json数据-->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=utf-8</value>
+                        <value>text/html;charset=utf-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+
+    <!--处理静态资源
+
+       如果将DispatcherServlet请求映射配置为"/"，则Spring MVC将捕获Web容器所有的请求，包括静态资源的请求，
+       Spring MVC会将它们当成一个普通请求处理，因此找不到对应处理器将导致错误。对进入DispatcherServlet的URL进行筛查，如果发现是静态资源的请求，
+       就将该请求转由Web应用服务器默认的Servlet处理，如果不是静态资源的请求，才由DispatcherServlet继续处理。（这是其中一种方法）
+
+    -->
+    <mvc:default-servlet-handler/>
+
+
+    <context:component-scan base-package="com.myloe.**">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+    </context:component-scan>
+
+    <!--需要spring-context-support包支持 -->
+    <!--FreeMarker视图解析配置 -->
+    <bean  id="freeMarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF/ftl/"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_update_delay">0</prop>
+                <prop key="default_encoding">UTF-8</prop>
+                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+                <prop key="number_format">0.####</prop>
+            </props>
+        </property>
+    </bean>
+    <!--velocity视图解析配置  -->
+    <bean id="velocityConfigurer" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/views"/>
+        <property name="velocityProperties">
+            <props>
+                <prop key="input.encoding">utf-8</prop>
+                <prop key="output.encoding">utf-8</prop>
+                <prop key="file.resource.loader.cache">false</prop>
+                <prop key="file.resource.loader.modificationCheckInterval">1</prop>
+                <prop key="velocimacro.library.autoreload">false</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--FreeMarker视图解析 -->
+   <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+       <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+       <property name = "suffix" value = ".ftl"/>
+       <property name="contentType" value="text/html; charset=utf-8"/>
+       <property name="exposeRequestAttributes" value="true" />
+       <property name="exposeSessionAttributes" value="true" />
+       <property name="exposeSpringMacroHelpers" value="true" />
+   </bean>
+
+    <!-- velocity 视图解析-->
+    <bean class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+        <property name="suffix" value=".vm"/>
+        <property name="contentType" value="text/html;charset=utf-8"/>
+        <property name="dateToolAttribute" value="date"/><!--日期函数名称-->
+    </bean>
+
+    <!-- jsp 视图解析-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp"/>
+        <property name="suffix" value=".jsp"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+    </bean>
+
+
+    <!-- 文件上传-->
+    <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置默认上传的字符集-->
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!-- 在内容中最大的存储容量，多余的存放在硬盘上-->
+        <property name="maxInMemorySize" value="100000"/>
+        <!-- 总文件大小， 大小是字节 1024000，表示102.4KB-->
+        <property name="maxUploadSize" value="1024000"/>
+        <!-- 单个文件大小，大小是字节 1024000，表示102.4KB-->
+        <property name="maxUploadSizePerFile" value="1024000"/>
+    </bean>
+</beans>

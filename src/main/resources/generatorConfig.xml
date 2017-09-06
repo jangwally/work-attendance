@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >  
+<generatorConfiguration>  
+    <!-- 引入配置文件 -->  
+   <!-- <properties url="file:///G:/mybatis-generator/jdbcInit.properties"/>  -->
+   <!-- <properties resource="jdbcInit.properties"/>-->
+
+    <!-- 指定数据连接驱动jar地址 -->
+<!--    <classPathEntry location="${jdbc.classPath}" />-->
+    <classPathEntry location="G:/MavenRepertory/mysql/mysql-connector-java/5.1.38/mysql-connector-java-5.1.38.jar" />
+    <!-- 一个数据库一个context -->  
+    <context id="infoGuardian" targetRuntime="MyBatis3">  
+		<!-- 生成的Java文件的编码 -->
+		<property name="javaFileEncoding" value="UTF-8"/>
+		<!-- 格式化java代码 -->
+		<property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+		<!-- 格式化XML代码 -->
+		<property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+	
+        <!-- 注释 -->  
+        <commentGenerator >  
+            <property name="suppressAllComments" value="true"/><!-- 是否取消注释 -->  
+            <property name="suppressDate" value="true" /> <!-- 是否生成注释代时间戳-->  
+        </commentGenerator>  
+          
+        <!-- jdbc连接 -->  
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+            connectionURL="jdbc:mysql://localhost:3306/work_attendance?zeroDateTimeBehavior=convertToNull"
+                        userId="root"
+            password="33211" />
+          
+        <!-- 类型转换 -->  
+        <javaTypeResolver>  
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->  
+            <property name="forceBigDecimals" value="false"/>  
+        </javaTypeResolver>  
+          
+        <!-- 生成实体类地址 -->    
+       <!-- <javaModelGenerator targetPackage="com.myloe.user.entity"
+            targetProject="${project}" >  
+            &lt;!&ndash; 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] &ndash;&gt;
+            <property name="enableSubPackages" value="true"/>  
+            &lt;!&ndash; 是否针对string类型的字段在set的时候进行trim调用 &ndash;&gt;
+            <property name="trimStrings" value="true"/>  
+        </javaModelGenerator>-->
+
+        <javaModelGenerator targetPackage="com.myloe.attend.entity"
+                            targetProject="G:/IDEAWorkspace/work-attendance/src/main/java" >
+            <!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+            <property name="enableSubPackages" value="true"/>
+            <!-- 是否针对string类型的字段在set的时候进行trim调用 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成mapxml文件 -->
+        <!-- <sqlMapGenerator targetPackage="com.myloe.user.dao"
+             targetProject="${project}" >
+             &lt;!&ndash; 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] &ndash;&gt;
+             <property name="enableSubPackages" value="true" />
+         </sqlMapGenerator>
+        -->
+        <sqlMapGenerator targetPackage="com.myloe.attend.dao"
+                         targetProject="G:/IDEAWorkspace/work-attendance/src/main/java" >
+            <!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- 生成mapxml对应client，也就是接口dao -->      
+      <!--  <javaClientGenerator targetPackage="com.myloe.user.dao"
+            targetProject="${project}" type="XMLMAPPER" >  
+            &lt;!&ndash; 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] &ndash;&gt;
+            <property name="enableSubPackages" value="true" />  
+        </javaClientGenerator>-->
+
+        <javaClientGenerator targetPackage="com.myloe.attend.dao"
+                             targetProject="G:/IDEAWorkspace/work-attendance/src/main/java" type="XMLMAPPER" >
+            <!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!-- 配置表信息 -->
+     <!--   <table tableName="user"
+            domainObjectName="User" enableCountByExample="false"  
+            enableDeleteByExample="false" enableSelectByExample="false"  
+            enableUpdateByExample="false"  enableSelectByPrimaryKey="true"
+			enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true">  
+            &lt;!&ndash; schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample
+                是否生成 example类   &ndash;&gt;
+              
+            &lt;!&ndash; 忽略列，不生成bean 字段 &ndash;&gt;
+            &lt;!&ndash; <ignoreColumn column="FRED" />  &ndash;&gt;
+            &lt;!&ndash; 指定列的java数据类型 &ndash;&gt;
+            &lt;!&ndash; <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />  &ndash;&gt;
+        </table>-->
+
+        <table tableName="attend"
+               domainObjectName="Attend" enableCountByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false"  enableSelectByPrimaryKey="true"
+               enableUpdateByPrimaryKey="true" enableDeleteByPrimaryKey="true">
+            <!-- schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample
+                是否生成 example类   -->
+
+            <!-- 忽略列，不生成bean 字段 -->
+            <!-- <ignoreColumn column="FRED" />  -->
+            <!-- 指定列的java数据类型 -->
+            <!-- <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />  -->
+        </table>
+  
+    </context>  
+</generatorConfiguration> 
